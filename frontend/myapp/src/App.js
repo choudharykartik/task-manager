@@ -10,7 +10,7 @@ function App() {
   const [deleteTask, setDeleteTask] = useState(null);
   useEffect(() => {
     axios
-      .get("http://localhost:8000/tasks/", {
+      .get("https://managemydailytasks.herokuapp.com/tasks/", {
         headers: {
           Authorization: "Token  3cc908a7f9e1959d47b8fcac1487f4b87ea083bd",
         },
