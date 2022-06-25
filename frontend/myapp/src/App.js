@@ -12,7 +12,7 @@ function App() {
     axios
       .get("https://managemydailytasks.herokuapp.com/tasks/", {
         headers: {
-          Authorization: "Token  3cc908a7f9e1959d47b8fcac1487f4b87ea083bd",
+          Authorization: "Token  7401b7e6e4bd7cc53dbec656464317b83b361d45",
         },
       })
       .then((resp) => {
