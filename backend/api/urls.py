@@ -10,7 +10,7 @@ router = DefaultRouter()
 router.register(r'tasks',TaskList,basename='tasks')
 router.register('auth',UserViewSet,basename='auth')
 urlpatterns = [
+    path('login', views.obtain_auth_token),
     path('', home,name='home'),
     path('', include(router.urls)),
-    path('login', views.obtain_auth_token),
 ]
