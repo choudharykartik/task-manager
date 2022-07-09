@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from "react";
 import APIService from "../APIService";
+import { useCookies } from "react-cookie";
 function TaskForm(props) {
   const [name, setTaskName] = useState("");
   const [description, setTaskDescription] = useState("");
-
+  const [token, setToken] = useCookies(["mytoken"]);
   useEffect(() => {
     setTaskName(props.task.name);
     setTaskDescription(props.task.description);
   }, [props.task]);
   const updateTask = (task) => {
-    APIService.updateTask(props.task.id, {
-      name,
-      description,
-    }).then((resp) => {
+    APIService.updateTask(
+      props.task.id,
+      {
+        name,
+        description,
+      },
+      token
+    ).then((resp) => {
       console.log(resp);
       props.updateInformation(resp.data);
     });
   };
   const addTask = (task) => {
-    APIService.addTask(props.task.id, {
-      name,
-      description,
-    }).then((resp) => {
+    APIService.addTask(
+      props.task.id,
+      {
+        name,
+        description,
+      },
+      token
+    ).then((resp) => {
       console.log(resp);
       props.insertInformation(resp.data);
     });

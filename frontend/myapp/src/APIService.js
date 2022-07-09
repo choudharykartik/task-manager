@@ -1,38 +1,38 @@
 import axios from "axios";
 
 export default class APIService {
-  static updateTask(id, body) {
+  static updateTask(id, body, token) {
     return axios.put(
       `https://managemydailytasks.herokuapp.com/tasks/${id}/`,
       body,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Token  7401b7e6e4bd7cc53dbec656464317b83b361d45",
+          Authorization: `Token  ${token["mytoken"]}`,
         },
       }
     );
   }
-  static addTask(id, body) {
+  static addTask(id, body, token) {
     return axios.post(`https://managemydailytasks.herokuapp.com/tasks/`, body, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Token  7401b7e6e4bd7cc53dbec656464317b83b361d45",
+        Authorization: `Token  ${token["mytoken"]}`,
       },
     });
   }
-  static deleteTask(id) {
+  static deleteTask(id, token) {
     return axios.delete(
       `https://managemydailytasks.herokuapp.com/tasks/${id}/`,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Token  7401b7e6e4bd7cc53dbec656464317b83b361d45",
+          Authorization: `Token  ${token["mytoken"]}`,
         },
       }
     );
   }
   static loginUser(data) {
-    return axios.post("https://managemydailytasks.herokuapp.com/auth/", data);
+    return axios.post("https://managemydailytasks.herokuapp.com/login", data);
   }
 }

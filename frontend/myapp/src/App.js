@@ -4,16 +4,18 @@ import "./App.css";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import APIService from "./APIService";
+import { useCookies } from "react-cookie";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
+  const [token] = useCookies(["mytoken"]);
   // const [deleteTask, setDeleteTask] = useState(null);
   useEffect(() => {
     axios
       .get("https://managemydailytasks.herokuapp.com/tasks/", {
         headers: {
-          Authorization: "Token  7401b7e6e4bd7cc53dbec656464317b83b361d45",
+          Authorization: `Token  ${token['mytoken']}`,
         },
       })
       .then((resp) => {
@@ -28,7 +30,7 @@ function App() {
   };
 
   const deleteBtn = (task) => {
-    APIService.deleteTask(task.id).then((resp) => console.log(resp));
+    APIService.deleteTask(task.id, token).then((resp) => console.log(resp));
     const newtasks = tasks.filter((mytask) => {
       if (mytask.id === task.id) {
         return false;

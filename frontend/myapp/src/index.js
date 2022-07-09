@@ -6,14 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Login from "./components/Login";
+import { CookiesProvider } from "react-cookie";
 function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" exact element={<Login />} />
-        <Route path="/tasks" exact element={<App />} />
-      </Routes>
-    </BrowserRouter>
+    <CookiesProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" exact element={<Login />} />
+          <Route path="/tasks" exact element={<App />} />
+        </Routes>
+      </BrowserRouter>
+    </CookiesProvider>
   );
 }
 
