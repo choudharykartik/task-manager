@@ -13,7 +13,7 @@ function TaskList(props) {
     <div>
       {props.tasks.map((task) => {
         return (
-          <div>
+          <div key={task.id}>
             <h2 key={task.id}>{task.name}</h2>
             <p>{task.description}</p>
             <div className="row">
@@ -28,7 +28,7 @@ function TaskList(props) {
               <div className="col">
                 <button
                   className="btn btn-danger"
-                  onClick={() => deleteBtn({ task })}
+                  onClick={() => deleteBtn(task)}
                 >
                   Delete
                 </button>

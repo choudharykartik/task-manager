@@ -1,10 +1,31 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import APIService from "../APIService";
 function TaskForm(props) {
-  const [taskName, setTaskName] = useState(props.task.name);
-  const [taskDescription, setTaskDescription] = useState(
-    props.task.description
-  );
+  const [name, setTaskName] = useState("");
+  const [description, setTaskDescription] = useState("");
+
+  useEffect(() => {
+    setTaskName(props.task.name);
+    setTaskDescription(props.task.description);
+  }, [props.task]);
+  const updateTask = (task) => {
+    APIService.updateTask(props.task.id, {
+      name,
+      description,
+    }).then((resp) => {
+      console.log(resp);
+      props.updateInformation(resp.data);
+    });
+  };
+  const addTask = (task) => {
+    APIService.addTask(props.task.id, {
+      name,
+      description,
+    }).then((resp) => {
+      console.log(resp);
+      props.insertInformation(resp.data);
+    });
+  };
 
   return (
     <div>
@@ -15,18 +36,26 @@ function TaskForm(props) {
             type="text"
             className="form-control"
             placeholder="Name"
-            value={taskName}
+            value={name}
             onChange={(e) => setTaskName(e.target.value)}
           />
           <label className="form-label">Description</label>
           <textarea
             className="form-control"
             placeholder="Description"
-            value={taskDescription}
+            value={description}
             onChange={(e) => setTaskDescription(e.target.value)}
           />
           <br />
-          <button className="btn btn-primary">Update</button>
+          {props.task.id ? (
+            <button className="btn btn-primary" onClick={updateTask}>
+              Update
+            </button>
+          ) : (
+            <button className="btn btn-primary" onClick={addTask}>
+              Add Task
+            </button>
+          )}
         </div>
       ) : null}
     </div>

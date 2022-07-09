@@ -3,11 +3,12 @@ import axios from "axios";
 import "./App.css";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import APIService from "./APIService";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
-  const [deleteTask, setDeleteTask] = useState(null);
+  // const [deleteTask, setDeleteTask] = useState(null);
   useEffect(() => {
     axios
       .get("https://managemydailytasks.herokuapp.com/tasks/", {
@@ -25,17 +26,62 @@ function App() {
   const editBtn = (tasks) => {
     setEditTask(tasks);
   };
-  const deleteBtn = (tasks) => {
-    setDeleteTask(tasks);
+
+  const deleteBtn = (task) => {
+    APIService.deleteTask(task.id).then((resp) => console.log(resp));
+    const newtasks = tasks.filter((mytask) => {
+      if (mytask.id === task.id) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    setTasks(newtasks);
+  };
+  const updateInformation = (task) => {
+    const newtasks = tasks.map((mytask) => {
+      if (mytask.id === task.id) {
+        return task;
+      } else {
+        return mytask;
+      }
+    });
+    setTasks(newtasks);
+  };
+  const insertInformation = (task) => {
+    setTasks([...tasks, task]);
+  };
+
+  const articleForm = () => {
+    setEditTask({ title: "", description: "" });
   };
 
   return (
     <div className="App">
-      <h2>Django and React Tasks App</h2>
+      <div className="row">
+        <div className="col">
+          <h2>Django and React Tasks App</h2>
+        </div>
+        <div className="col">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={articleForm}
+          >
+            Add Task
+          </button>
+        </div>
+      </div>
       <br />
       <br />
       <TaskList tasks={tasks} editBtn={editBtn} deleteBtn={deleteBtn} />
-      {editTask ? <TaskForm task={editTask} /> : null}
+      {editTask ? (
+        <TaskForm
+          task={editTask}
+          updateInformation={updateInformation}
+          insertInformation={insertInformation}
+        />
+      ) : null}
     </div>
   );
 }
