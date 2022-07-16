@@ -41,7 +41,7 @@ function Login() {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{ textAlign: "center" }}>
       {isLogin ? (
         <div>
           {" "}
@@ -56,6 +56,7 @@ function Login() {
               name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>
           <div className="mb-3">
@@ -68,6 +69,7 @@ function Login() {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>
         </div>
@@ -84,6 +86,7 @@ function Login() {
               name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>
           <div className="mb-3">
@@ -96,6 +99,7 @@ function Login() {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>
           <div className="mb-3">
@@ -108,6 +112,7 @@ function Login() {
               name="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>
           <div className="mb-3">
@@ -120,6 +125,7 @@ function Login() {
               name="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>
           <div className="mb-3">
@@ -132,6 +138,7 @@ function Login() {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={{ width: "50%", margin: "auto" }}
             />
           </div>{" "}
         </div>
