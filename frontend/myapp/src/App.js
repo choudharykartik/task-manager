@@ -5,17 +5,24 @@ import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import APIService from "./APIService";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
-  const [token] = useCookies(["mytoken"]);
+  const [token, setToken, RemoveToken] = useCookies(["mytoken"]);
   // const [deleteTask, setDeleteTask] = useState(null);
+  let history = useNavigate();
+  useEffect(() => {
+    if (!token["mytoken"]) {
+      history("/");
+    }
+  }, [token]);
   useEffect(() => {
     axios
       .get("https://managemydailytasks.herokuapp.com/tasks/", {
         headers: {
-          Authorization: `Token  ${token['mytoken']}`,
+          Authorization: `Token  ${token["mytoken"]}`,
         },
       })
       .then((resp) => {
@@ -58,6 +65,10 @@ function App() {
     setEditTask({ title: "", description: "" });
   };
 
+  const LogoutBtn = () => {
+    RemoveToken(["mytoken"]);
+  };
+
   return (
     <div className="App">
       <div className="row">
@@ -71,6 +82,11 @@ function App() {
             onClick={articleForm}
           >
             Add Task
+          </button>
+        </div>
+        <div className="col">
+          <button type="button" className="btn btn-primary" onClick={LogoutBtn}>
+            Logout
           </button>
         </div>
       </div>

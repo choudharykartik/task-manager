@@ -2,20 +2,25 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+
 class Task(models.Model):
     name = models.CharField(max_length=250)
-    description = models.CharField(max_length=1000,null=True,blank=True)
-    priority = models.IntegerField(default=5,null=True,blank=True)
-    due_date = models.DateTimeField(blank=True,null=True)
+    description = models.CharField(max_length=1000, null=True, blank=True)
+    priority = models.IntegerField(default=5, null=True, blank=True)
+    due_date = models.DateTimeField(blank=True, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
 
 """
 This file contains the Data Models for Appuser Tables
 """
 
 
-user_status_choices = [('Active','Active'),('Inactive','Inactive')]
+user_status_choices = [('Active', 'Active'), ('Inactive', 'Inactive')]
+
+
 class Appuser(AbstractUser):
     user_id = models.AutoField(primary_key=True)
     # org_id = models.ForeignKey(Organization, on_delete=models.CASCADE)
@@ -25,13 +30,13 @@ class Appuser(AbstractUser):
     first_login = models.BooleanField(default=True)
     email = models.EmailField(unique=True)
     recovery_email_address = models.CharField(max_length=100, blank=True)
-    status = models.CharField(max_length=255, choices=user_status_choices, default='Active')
-    phone = models.CharField(blank=True,null=True,max_length=255)
+    status = models.CharField(
+        max_length=255, choices=user_status_choices, default='Active')
+    phone = models.CharField(blank=True, null=True, max_length=255)
     created_date = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=1255, blank=True)
     modified_date = models.DateTimeField(null=True, blank=True)
     modified_by = models.CharField(max_length=255, blank=True)
-
 
     def __str__(self):
         return str(self.username)
