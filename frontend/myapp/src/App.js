@@ -6,12 +6,19 @@ import TaskForm from "./components/TaskForm";
 import APIService from "./APIService";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
   const [token, setToken, RemoveToken] = useCookies(["mytoken"]);
   // const [deleteTask, setDeleteTask] = useState(null);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   let history = useNavigate();
   useEffect(() => {
     if (!token["mytoken"]) {
@@ -34,6 +41,7 @@ function App() {
   }, []);
   const editBtn = (tasks) => {
     setEditTask(tasks);
+    handleShow();
   };
 
   const deleteBtn = (task) => {
@@ -56,13 +64,16 @@ function App() {
       }
     });
     setTasks(newtasks);
+    handleClose();
   };
   const insertInformation = (task) => {
     setTasks([...tasks, task]);
+    handleClose();
   };
 
   const articleForm = () => {
     setEditTask({ title: "", description: "" });
+    handleShow();
   };
 
   const LogoutBtn = () => {
@@ -79,27 +90,41 @@ function App() {
           <button
             type="button"
             className="btn btn-primary"
+            onClick={LogoutBtn}
+            style={{ float: "right", marginLeft: "10px" }}
+          >
+            Logout
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
             onClick={articleForm}
+            style={{ float: "right" }}
           >
             Add Task
           </button>
         </div>
-        <div className="col">
-          <button type="button" className="btn btn-primary" onClick={LogoutBtn}>
-            Logout
-          </button>
-        </div>
       </div>
+
+      {editTask ? (
+        <>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <TaskForm
+                task={editTask}
+                updateInformation={updateInformation}
+                insertInformation={insertInformation}
+              />
+            </Modal.Body>
+          </Modal>
+        </>
+      ) : null}
       <br />
       <br />
       <TaskList tasks={tasks} editBtn={editBtn} deleteBtn={deleteBtn} />
-      {editTask ? (
-        <TaskForm
-          task={editTask}
-          updateInformation={updateInformation}
-          insertInformation={insertInformation}
-        />
-      ) : null}
     </div>
   );
 }
