@@ -153,7 +153,7 @@ function App() {
           style={{ width: "18rem", backgroundColor: "OrangeRed" }}
           className="col"
         >
-          <Card.Header>Due Task</Card.Header>
+          <Card.Header>Due</Card.Header>
           <Card.Body>
             <Card.Title>{kpis.due} </Card.Title>
             {/* <Card.Text>
@@ -183,7 +183,7 @@ function App() {
           style={{ width: "18rem", backgroundColor: "GreenYellow" }}
           className="col"
         >
-          <Card.Header>Done Tasks</Card.Header>
+          <Card.Header>Done </Card.Header>
           <Card.Body>
             <Card.Title>{kpis.done}</Card.Title>
             {/* <Card.Text>
