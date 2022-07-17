@@ -9,13 +9,16 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import Card from "react-bootstrap/Card";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [kpis, setKpis] = useState({ due: "", todo: "", done: "" });
   const [editTask, setEditTask] = useState(null);
   const [token, setToken, RemoveToken] = useCookies(["mytoken"]);
   // const [deleteTask, setDeleteTask] = useState(null);
   const [show, setShow] = useState(false);
+  const [fetchTask, setFetchTask] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,7 +30,7 @@ function App() {
   }, [token]);
   useEffect(() => {
     axios
-      .get("https://managemydailytasks.herokuapp.com/tasks/", {
+      .get("http://localhost:8000/tasks/", {
         headers: {
           Authorization: `Token  ${token["mytoken"]}`,
         },
@@ -38,7 +41,21 @@ function App() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+    // fetch Statistics
+    axios
+      .get("http://localhost:8000/tasks_statistics/", {
+        headers: {
+          Authorization: `Token  ${token["mytoken"]}`,
+        },
+      })
+      .then((resp) => {
+        setKpis(resp.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    setFetchTask(false);
+  }, [fetchTask]);
   const editBtn = (tasks) => {
     setEditTask(tasks);
     handleShow();
@@ -46,14 +63,37 @@ function App() {
 
   const deleteBtn = (task) => {
     APIService.deleteTask(task.id, token).then((resp) => console.log(resp));
-    const newtasks = tasks.filter((mytask) => {
-      if (mytask.id === task.id) {
-        return false;
-      } else {
-        return true;
-      }
+    setFetchTask(true);
+  };
+  const UndoneBtn = (task) => {
+    APIService.updateTask(
+      task.id,
+      {
+        name: task.name,
+        description: task.description,
+        status: "New",
+      },
+      token
+    ).then((resp) => {
+      console.log(resp);
+      // props.updateInformation(resp.data);
     });
-    setTasks(newtasks);
+    setFetchTask(true);
+  };
+  const DoneBtn = (task) => {
+    APIService.updateTask(
+      task.id,
+      {
+        name: task.name,
+        description: task.description,
+        status: "Success",
+      },
+      token
+    ).then((resp) => {
+      console.log(resp);
+      setFetchTask(true);
+      // props.updateInformation(resp.data);
+    });
   };
   const updateInformation = (task) => {
     const newtasks = tasks.map((mytask) => {
@@ -67,8 +107,8 @@ function App() {
     handleClose();
   };
   const insertInformation = (task) => {
-    setTasks([...tasks, task]);
     handleClose();
+    setFetchTask(true);
   };
 
   const articleForm = () => {
@@ -106,6 +146,54 @@ function App() {
         </div>
       </div>
 
+      <div className="row">
+        <Card
+          key="danger"
+          text="dark"
+          style={{ width: "18rem", backgroundColor: "OrangeRed" }}
+          className="col"
+        >
+          <Card.Header>Due Task</Card.Header>
+          <Card.Body>
+            <Card.Title>{kpis.due} </Card.Title>
+            {/* <Card.Text>
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </Card.Text> */}
+          </Card.Body>
+        </Card>
+        <Card
+          key="primary"
+          text="dark"
+          style={{ width: "18rem", backgroundColor: "DeepSkyBlue" }}
+          className="col"
+        >
+          <Card.Header>To Do</Card.Header>
+          <Card.Body>
+            <Card.Title>{kpis.todo} </Card.Title>
+            {/* <Card.Text>
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </Card.Text> */}
+          </Card.Body>
+        </Card>
+        <Card
+          key="success"
+          text="dark"
+          style={{ width: "18rem", backgroundColor: "GreenYellow" }}
+          className="col"
+        >
+          <Card.Header>Done Tasks</Card.Header>
+          <Card.Body>
+            <Card.Title>{kpis.done}</Card.Title>
+            {/* <Card.Text>
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </Card.Text> */}
+          </Card.Body>
+        </Card>
+      </div>
+
       {editTask ? (
         <>
           <Modal show={show} onHide={handleClose}>
@@ -124,7 +212,13 @@ function App() {
       ) : null}
       <br />
       <br />
-      <TaskList tasks={tasks} editBtn={editBtn} deleteBtn={deleteBtn} />
+      <TaskList
+        tasks={tasks}
+        editBtn={editBtn}
+        deleteBtn={deleteBtn}
+        DoneBtn={DoneBtn}
+        UndoneBtn={UndoneBtn}
+      />
     </div>
   );
 }

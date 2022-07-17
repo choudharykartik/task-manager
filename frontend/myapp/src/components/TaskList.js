@@ -4,12 +4,17 @@ import Card from "react-bootstrap/Card";
 
 function TaskList(props) {
   const deleteBtn = (task) => {
-    console.log("deleteTask", task);
     props.deleteBtn(task);
   };
 
   const editBtn = (task) => {
     props.editBtn(task);
+  };
+  const DoneBtn = (task) => {
+    props.DoneBtn(task);
+  };
+  const UndoneBtn = (task) => {
+    props.UndoneBtn(task);
   };
   return (
     <div>
@@ -30,7 +35,7 @@ function TaskList(props) {
               {task.name}
             </Card.Header>
             <Card.Body>
-              <Card.Title>{task.status}</Card.Title>
+              {/* <Card.Title>{task.status}</Card.Title> */}
               <Card.Text>{task.description}</Card.Text>
               <Button variant="primary" onClick={() => editBtn(task)}>
                 Update
@@ -38,6 +43,15 @@ function TaskList(props) {
               <Button variant="danger" onClick={() => deleteBtn(task)}>
                 Delete
               </Button>
+              {task.status === "Success" ? (
+                <Button variant="warning" onClick={() => UndoneBtn(task)}>
+                  Mark Undone
+                </Button>
+              ) : (
+                <Button variant="success" onClick={() => DoneBtn(task)}>
+                  Mark Done
+                </Button>
+              )}
             </Card.Body>
           </Card>
           // <div key={task.id}>

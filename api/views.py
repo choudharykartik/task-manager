@@ -15,6 +15,22 @@ def home(request):
     return HttpResponse('Welcome to my Task App')
 
 
+@api_view(['GET'])
+def tasks_statistics(request):
+    try:
+        queryset = Task.objects.filter(
+            created_by=request.user)
+        data = {
+            "due": queryset.filter(status="Due").count(),
+            "todo": queryset.filter(status="New").count(),
+            "done": queryset.filter(status="Success").count()
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return Response({"message": "Error in fetching counts", "detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class TaskList(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
