@@ -18,7 +18,7 @@ function TaskForm(props) {
       },
       token
     ).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       props.updateInformation(resp.data);
     });
   };
@@ -31,7 +31,7 @@ function TaskForm(props) {
       },
       token
     ).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       props.insertInformation(resp.data);
     });
   };

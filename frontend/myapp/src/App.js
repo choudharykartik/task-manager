@@ -30,7 +30,7 @@ function App() {
   }, [token]);
   useEffect(() => {
     axios
-      .get("http://localhost:8000/tasks/", {
+      .get("https://managemydailytasks.herokuapp.com/tasks/", {
         headers: {
           Authorization: `Token  ${token["mytoken"]}`,
         },
@@ -43,7 +43,7 @@ function App() {
       });
     // fetch Statistics
     axios
-      .get("http://localhost:8000/tasks_statistics/", {
+      .get("https://managemydailytasks.herokuapp.com/tasks_statistics/", {
         headers: {
           Authorization: `Token  ${token["mytoken"]}`,
         },
@@ -75,7 +75,7 @@ function App() {
       },
       token
     ).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       // props.updateInformation(resp.data);
     });
     setFetchTask(true);
@@ -90,7 +90,7 @@ function App() {
       },
       token
     ).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       setFetchTask(true);
       // props.updateInformation(resp.data);
     });

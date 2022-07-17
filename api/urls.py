@@ -13,5 +13,5 @@ urlpatterns = [
     path('login', views.obtain_auth_token),
     path('', home, name='home'),
     path('', include(router.urls)),
-    path('tasks_statistics', tasks_statistics, name='tasks_statistics'),
+    path('tasks_statistics/', tasks_statistics, name='tasks_statistics'),
 ]
