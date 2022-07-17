@@ -84,7 +84,7 @@ function App() {
     <div className="App">
       <div className="row">
         <div className="col">
-          <h2>Django and React Tasks App</h2>
+          <h2 style={{ color: "white" }}>Django and React Tasks App</h2>
         </div>
         <div className="col">
           <button
