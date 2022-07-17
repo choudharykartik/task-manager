@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -8,6 +9,8 @@ class Task(models.Model):
     name = models.CharField(max_length=250)
     description = models.CharField(max_length=1000, null=True, blank=True)
     priority = models.IntegerField(default=5, null=True, blank=True)
+    status = models.CharField(
+        max_length=100, default="New", null=True, blank=True)
     due_date = models.DateTimeField(blank=True, null=True)
     created_by = models.ForeignKey(
         "Appuser", on_delete=models.CASCADE, null=True, blank=True)

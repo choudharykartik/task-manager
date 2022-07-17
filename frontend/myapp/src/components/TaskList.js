@@ -16,9 +16,21 @@ function TaskList(props) {
       {props.tasks.map((task) => {
         return (
           <Card key={task.id} style={{ marginTop: "10px" }}>
-            <Card.Header as="h5">{task.name}</Card.Header>
+            <Card.Header
+              as="h5"
+              style={{
+                backgroundColor:
+                  task.status === "Success"
+                    ? "green"
+                    : task.status === "Due"
+                    ? "red"
+                    : "blue",
+              }}
+            >
+              {task.name}
+            </Card.Header>
             <Card.Body>
-              {/* <Card.Title>Special title treatment</Card.Title> */}
+              <Card.Title>{task.status}</Card.Title>
               <Card.Text>{task.description}</Card.Text>
               <Button variant="primary" onClick={() => editBtn(task)}>
                 Update

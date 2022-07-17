@@ -21,7 +21,8 @@ class TaskList(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        queryset = Task.objects.filter(created_by=request.user)
+        queryset = Task.objects.filter(
+            created_by=request.user).order_by('status')
         serialized = TaskSerializer(queryset, many=True)
         return Response(serialized.data, status=status.HTTP_200_OK)
 

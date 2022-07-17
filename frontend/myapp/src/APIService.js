@@ -33,7 +33,7 @@ export default class APIService {
     );
   }
   static loginUser(data) {
-    return axios.post("https://managemydailytasks.herokuapp.com/login", data);
+    return axios.post("http://localhost:8000/login", data);
   }
   static registerUser(data) {
     return axios.post("https://managemydailytasks.herokuapp.com/auth/", data);
