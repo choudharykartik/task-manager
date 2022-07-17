@@ -21,10 +21,10 @@ function TaskList(props) {
               style={{
                 backgroundColor:
                   task.status === "Success"
-                    ? "green"
+                    ? "GreenYellow"
                     : task.status === "Due"
-                    ? "red"
-                    : "blue",
+                    ? "OrangeRed"
+                    : "DeepSkyBlue",
               }}
             >
               {task.name}
