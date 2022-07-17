@@ -135,14 +135,6 @@ function App() {
           >
             Logout
           </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={articleForm}
-            style={{ float: "right" }}
-          >
-            Add Task
-          </button>
         </div>
       </div>
 
@@ -211,6 +203,14 @@ function App() {
         </>
       ) : null}
       <br />
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={articleForm}
+        style={{ float: "right" }}
+      >
+        Add Task
+      </button>
       <br />
       <TaskList
         tasks={tasks}
