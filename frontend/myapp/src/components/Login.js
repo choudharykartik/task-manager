@@ -41,7 +41,7 @@ function Login() {
   };
 
   return (
-    <div className="App" style={{ textAlign: "center" }}>
+    <div className="LoginApp" style={{ textAlign: "center" }}>
       {isLogin ? (
         <div>
           {" "}
