@@ -34,7 +34,7 @@ def tasks_statistics(request):
 def check_due_task(request):
     try:
         print(datetime.datetime.now())
-        queryset = Task.objects.filter(due_date__lt=datetime.datetime.now())
+        queryset = Task.objects.filter(due_date__lt=datetime.datetime.now(),status="New")
         due_tasks = queryset.count()
         queryset.update(status="Due")
         data = {
