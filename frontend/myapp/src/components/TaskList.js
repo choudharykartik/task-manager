@@ -37,6 +37,10 @@ function TaskList(props) {
             <Card.Body>
               {/* <Card.Title>{task.status}</Card.Title> */}
               <Card.Text>{task.description}</Card.Text>
+              <Card.Text>
+                Due Date:
+                {new Date(task.due_date).toString().substring(0, 15)}
+              </Card.Text>
               <Button variant="primary" onClick={() => editBtn(task)}>
                 Update
               </Button>

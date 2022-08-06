@@ -29,9 +29,9 @@ function App() {
     }
   }, [token]);
 
-  useEffect(()=>{
-    axios.get("https://managemydailytasks.herokuapp.com/check_due_task/")
-  },[])
+  useEffect(() => {
+    axios.get("https://managemydailytasks.herokuapp.com/check_due_task/");
+  }, []);
   useEffect(() => {
     axios
       .get("https://managemydailytasks.herokuapp.com/tasks/", {
