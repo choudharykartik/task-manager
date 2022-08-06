@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, APIView
 from rest_framework import generics, mixins, viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
+import datetime
 
 # Create your views here.
 def home(request):
@@ -24,6 +24,21 @@ def tasks_statistics(request):
             "due": queryset.filter(status="Due").count(),
             "todo": queryset.filter(status="New").count(),
             "done": queryset.filter(status="Success").count()
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return Response({"message": "Error in fetching counts", "detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def check_due_task(request):
+    try:
+        print(datetime.datetime.now())
+        queryset = Task.objects.filter(due_date__lt=datetime.datetime.now())
+        due_tasks = queryset.count()
+        queryset.update(status="Due")
+        data = {
+            "due_tasks": due_tasks,
         }
         return Response(data, status=status.HTTP_200_OK)
     except Exception as e:

@@ -14,4 +14,5 @@ urlpatterns = [
     path('', home, name='home'),
     path('', include(router.urls)),
     path('tasks_statistics/', tasks_statistics, name='tasks_statistics'),
+    path('check_due_task/', check_due_task, name='check_due_task'),
 ]
