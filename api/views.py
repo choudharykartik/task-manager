@@ -63,9 +63,9 @@ class TaskList(viewsets.ModelViewSet):
 
     def list(self, request):
         query = request.GET.get('query')
-        if not query:
+        if query:
             queryset = Task.objects.filter(
-                Q(name__icontain=query) | Q(description__icontain=query), created_by=request.user).order_by('status')
+                Q(name__icontains=query) | Q(description__icontains=query), created_by=request.user).order_by('status')
         else:
             queryset = Task.objects.filter(
                 created_by=request.user).order_by('status')
