@@ -102,7 +102,10 @@ function App() {
     ).then((resp) => {
       // console.log(resp);
       setFetchTask(true);
-      toast.success("Task updated successfully.");
+      // toast.success("Task updated successfully.");
+      toast("Task completed successfully!", {
+        icon: "👏",
+      });
       // props.updateInformation(resp.data);
     });
   };

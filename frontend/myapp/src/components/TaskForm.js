@@ -45,10 +45,14 @@ function TaskForm(props) {
         due_date: dueDate,
       },
       token
-    ).then((resp) => {
-      // console.log(resp);
-      props.insertInformation(resp.data);
-    });
+    )
+      .then((resp) => {
+        toast.success("Task added successfully.");
+        props.insertInformation(resp.data);
+      })
+      .catch((resp) => {
+        toast.error(resp.response.data[Object.keys(resp.response.data)[0]]);
+      });
   };
 
   return (
