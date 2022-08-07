@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -66,7 +67,13 @@ function App() {
   };
 
   const deleteBtn = (task) => {
-    APIService.deleteTask(task.id, token).then((resp) => console.log(resp));
+    APIService.deleteTask(task.id, token)
+      .then((resp) => {
+        toast.success("Task deleted successfully.");
+      })
+      .catch((resp) => {
+        toast.error(resp.response.data[Object.keys(resp.response.data)[0]]);
+      });
     setFetchTask(true);
   };
   const UndoneBtn = (task) => {
@@ -79,8 +86,7 @@ function App() {
       },
       token
     ).then((resp) => {
-      // console.log(resp);
-      // props.updateInformation(resp.data);
+      toast.success("Task updated successfully.");
     });
     setFetchTask(true);
   };
@@ -96,6 +102,7 @@ function App() {
     ).then((resp) => {
       // console.log(resp);
       setFetchTask(true);
+      toast.success("Task updated successfully.");
       // props.updateInformation(resp.data);
     });
   };
@@ -122,10 +129,13 @@ function App() {
 
   const LogoutBtn = () => {
     RemoveToken(["mytoken"]);
+    toast.success("Logout successfully.");
   };
 
   return (
     <div className="App">
+      <Toaster />
+
       <div className="row">
         <div className="col">
           <h2 style={{ color: "white" }}> Tasks Manager</h2>

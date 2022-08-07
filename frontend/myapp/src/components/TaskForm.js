@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import APIService from "../APIService";
 import { useCookies } from "react-cookie";
+import toast, { Toaster } from "react-hot-toast";
+
 function TaskForm(props) {
   const [name, setTaskName] = useState("");
   const [description, setTaskDescription] = useState("");
@@ -31,6 +33,7 @@ function TaskForm(props) {
     ).then((resp) => {
       // console.log(resp);
       props.updateInformation(resp.data);
+      toast.success("Task updated successfully.");
     });
   };
   const addTask = (task) => {
