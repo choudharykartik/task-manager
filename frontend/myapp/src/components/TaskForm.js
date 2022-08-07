@@ -13,8 +13,11 @@ function TaskForm(props) {
   useEffect(() => {
     setTaskName(props.task.name);
     setTaskDescription(props.task.description);
-    setDueDate(new Date(props.task.due_date).toISOString().substring(0, 10));
-    console.log(new Date(props.task.due_date).toString());
+    setDueDate(
+      props.task.due_date
+        ? new Date(props.task.due_date).toISOString().substring(0, 10)
+        : dueDate
+    );
   }, [props.task]);
   const updateTask = (task) => {
     APIService.updateTask(
