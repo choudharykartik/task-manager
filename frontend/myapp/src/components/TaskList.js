@@ -58,30 +58,6 @@ function TaskList(props) {
               )}
             </Card.Body>
           </Card>
-          // <div key={task.id}>
-          //   <h2 key={task.id}>{task.name}</h2>
-          //   <p>{task.description}</p>
-          //   <div className="row">
-          //     <div className="col-md-1">
-          //       <button
-          //         className="btn btn-primary"
-          //         onClick={() => editBtn(task)}
-          //       >
-          //         Update
-          //       </button>
-          //     </div>
-          //     <div className="col">
-          //       <button
-          //         className="btn btn-danger"
-          //         onClick={() => deleteBtn(task)}
-          //       >
-          //         Delete
-          //       </button>
-          //     </div>
-          //   </div>
-          //   <br />
-          //   <hr />
-          // </div>
         );
       })}
     </div>

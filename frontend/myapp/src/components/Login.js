@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import APIService from "../APIService";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,12 +19,14 @@ function Login() {
       history("/tasks");
     }
   }, [token]);
-
+  const ErrorNotify = () => toast.error("Invalid Login Credentials.");
   const userLogin = () => {
-    APIService.loginUser(
-      { username: username, password: password },
-      token
-    ).then((resp) => setToken("mytoken", resp.data.token));
+    APIService.loginUser({ username: username, password: password }, token)
+      .then((resp) => setToken("mytoken", resp.data.token))
+      .catch((resp) => {
+        console.log(resp.response.data[Object.keys(resp.response.data)[0]]);
+        toast.error("Invalid login Credentials.");
+      });
   };
 
   const userRegister = () => {
@@ -37,136 +40,140 @@ function Login() {
       .then((resp) => {
         userLogin();
       })
-      .catch((err) => console.log(err));
+      .catch((resp) =>
+        toast.error(resp.response.data[Object.keys(resp.response.data)[0]])
+      );
   };
+  const FormHeader = (props) => <h2 id="headerTitle">{props.title}</h2>;
+
+  const LoginFormButton = (props) => (
+    <div id="loginbutton" className="loginrow">
+      <button onClick={userLogin}>{props.title}</button>
+    </div>
+  );
+  const RegisterFormButton = (props) => (
+    <div id="registerbutton" className="loginrow">
+      <button onClick={userRegister}>{props.title}</button>
+    </div>
+  );
 
   return (
-    <div className="LoginApp" style={{ textAlign: "center" }}>
+    <div id="loginform">
+      <Toaster />
       {isLogin ? (
-        <div>
-          {" "}
-          <h2>Login</h2>
-          <div className="mb-3">
-            <label className="form-label">Username</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Username"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
-            />
+        <>
+          <FormHeader title="Login" />
+          <div>
+            <div className="loginrow">
+              <label>Username</label>
+              <input
+                id="username"
+                key="username"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div className="loginrow">
+              <label>Password</label>
+              <input
+                id="password"
+                key="password"
+                placeholder="Enter your password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              className="form-control"
-              type="password"
-              placeholder="Password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
-            />
-          </div>
-        </div>
+        </>
       ) : (
-        <div>
-          <h2>Register</h2>
-          <div className="mb-3">
-            <label className="form-label">Username</label>
+        <>
+          <FormHeader title="Register" />
+          <div className="loginrow">
+            <label>Username</label>
             <input
-              type="text"
-              className="form-control"
-              placeholder="Username"
               id="username"
-              name="username"
+              key="username"
+              type="text"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Email</label>
+          <div className="loginrow">
+            <label>Email</label>
             <input
+              placeholder="Enter your Email"
               type="email"
-              className="form-control"
-              placeholder="email"
-              id="email"
+              id="Email"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">First Name</label>
+          <div className="loginrow">
+            <label>First Name</label>
             <input
+              placeholder="Enter your First Name"
               type="text"
-              className="form-control"
-              placeholder="First Name"
               id="firstName"
               name="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Last Name</label>
+          <div className="loginrow">
+            <label>Last Name</label>
             <input
+              placeholder="Enter your Last Name"
               type="text"
-              className="form-control"
-              placeholder="Last Name"
               id="lastName"
               name="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
+          <div className="loginrow">
+            <label>Password</label>
             <input
-              className="form-control"
-              type="password"
-              placeholder="Password"
               id="password"
+              key="password"
+              placeholder="Enter your password"
+              type="password"
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={{ width: "50%", margin: "auto" }}
             />
-          </div>{" "}
-        </div>
+          </div>
+        </>
       )}
 
       {isLogin ? (
-        <button className="btn btn-primary" onClick={userLogin}>
-          Login
-        </button>
+        <LoginFormButton title="Log in" />
       ) : (
-        <button className="btn btn-primary" onClick={userRegister}>
-          Register
-        </button>
+        <RegisterFormButton title="Register" />
       )}
       {isLogin ? (
-        <p>
-          New User ?{" "}
-          <a className="link-primary" onClick={() => setIsLogin(false)}>
-            Register now
-          </a>
-        </p>
+        <div id="alternativeLogin">
+          <label>
+            New User ?{" "}
+            <a className="link-primary" onClick={() => setIsLogin(false)}>
+              Register now
+            </a>
+          </label>
+        </div>
       ) : (
-        <p>
-          Already logged in?{" "}
-          <a className="ink-primary" onClick={() => setIsLogin(true)}>
-            Login now
-          </a>
-        </p>
+        <div id="alternativeLogin">
+          <label>
+            Already logged in?{" "}
+            <a className="ink-primary" onClick={() => setIsLogin(true)}>
+              Login now
+            </a>
+          </label>
+        </div>
       )}
     </div>
   );

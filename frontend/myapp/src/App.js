@@ -131,14 +131,13 @@ function App() {
           <h2 style={{ color: "white" }}> Tasks Manager</h2>
         </div>
         <div className="col">
-          <button
-            type="button"
-            className="btn btn-primary"
+          <Button
+            variant="primary"
             onClick={LogoutBtn}
-            style={{ float: "right", marginLeft: "10px" }}
+            style={{ float: "right", marginLeft: "10px", marginBottom: "10px" }}
           >
             Logout
-          </button>
+          </Button>
         </div>
       </div>
 
