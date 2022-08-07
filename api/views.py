@@ -9,8 +9,12 @@ from rest_framework import generics, mixins, viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 import datetime
+from django.db.models import Q
+
 
 # Create your views here.
+
+
 def home(request):
     return HttpResponse('Welcome to my Task App')
 
@@ -30,13 +34,19 @@ def tasks_statistics(request):
         print(e)
         return Response({"message": "Error in fetching counts", "detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET'])
 def check_due_task(request):
     try:
         print(datetime.datetime.now())
-        queryset = Task.objects.filter(due_date__lt=datetime.datetime.now(),status="New")
+        queryset = Task.objects.filter(
+            due_date__lt=datetime.datetime.now(), status="New")
         due_tasks = queryset.count()
         queryset.update(status="Due")
+        queryset = Task.objects.filter(
+            due_date__gt=datetime.datetime.now(), status="Due")
+        due_tasks = queryset.count()
+        queryset.update(status="New")
         data = {
             "due_tasks": due_tasks,
         }
@@ -52,8 +62,13 @@ class TaskList(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        queryset = Task.objects.filter(
-            created_by=request.user).order_by('status')
+        query = request.GET.get('query')
+        if not query:
+            queryset = Task.objects.filter(
+                Q(name__icontain=query) | Q(description__icontain=query), created_by=request.user).order_by('status')
+        else:
+            queryset = Task.objects.filter(
+                created_by=request.user).order_by('status')
         serialized = TaskSerializer(queryset, many=True)
         return Response(serialized.data, status=status.HTTP_200_OK)
 
