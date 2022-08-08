@@ -21,6 +21,17 @@ export default class APIService {
       },
     });
   }
+  static searchTask(query, token) {
+    return axios.get(
+      `https://managemydailytasks.herokuapp.com/tasks/?query=${query}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token  ${token["mytoken"]}`,
+        },
+      }
+    );
+  }
   static deleteTask(id, token) {
     return axios.delete(
       `https://managemydailytasks.herokuapp.com/tasks/${id}/`,

@@ -14,6 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [query, setQuery] = useState("");
   const [kpis, setKpis] = useState({ due: "", todo: "", done: "" });
   const [editTask, setEditTask] = useState(null);
   const [token, setToken, RemoveToken] = useCookies(["mytoken"]);
@@ -35,7 +36,7 @@ function App() {
   }, []);
   useEffect(() => {
     axios
-      .get("https://managemydailytasks.herokuapp.com/tasks/", {
+      .get(`https://managemydailytasks.herokuapp.com/tasks/?query=${query}`, {
         headers: {
           Authorization: `Token  ${token["mytoken"]}`,
         },
@@ -134,6 +135,20 @@ function App() {
     RemoveToken(["mytoken"]);
     toast.success("Logout successfully.");
   };
+  const searchTask = () => {
+    APIService.searchTask(query, token)
+      .then((resp) => {
+        if (resp.data.length === 0) {
+          toast.error("No task found.");
+        } else {
+          toast.success("Task found successfully.");
+        }
+        setTasks(resp.data);
+      })
+      .catch((resp) => {
+        toast.error(resp.response.data[Object.keys(resp.response.data)[0]]);
+      });
+  };
 
   return (
     <div className="App">
@@ -219,14 +234,36 @@ function App() {
         </>
       ) : null}
       <br />
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={articleForm}
-        style={{ float: "right" }}
-      >
-        Add Task
-      </button>
+      <div className="row">
+        <div className="col ">
+          <input
+            type="text"
+            // className="form-control"
+            placeholder="search tasks..."
+            className="bg-white p-2 w-3/4 outline-none"
+            name="query"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="p-2 text-center text-blue-500 w-1/4 bg-white border-l"
+            onClick={searchTask}
+          >
+            Search
+          </button>{" "}
+        </div>
+        <div className="col">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={articleForm}
+            style={{ float: "right" }}
+          >
+            Add Task
+          </button>
+        </div>
+      </div>
       <br />
       <br />
       <TaskList

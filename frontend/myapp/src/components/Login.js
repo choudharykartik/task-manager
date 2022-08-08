@@ -19,7 +19,6 @@ function Login() {
       history("/tasks");
     }
   }, [token]);
-  const ErrorNotify = () => toast.error("Invalid Login Credentials.");
   const userLogin = () => {
     APIService.loginUser({ username: username, password: password }, token)
       .then((resp) => setToken("mytoken", resp.data.token))
