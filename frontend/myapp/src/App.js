@@ -250,7 +250,7 @@ function App() {
             className="p-2 text-center text-blue-500 w-1/4 bg-white border-0"
             onClick={searchTask}
           >
-            s
+            Search
           </button>{" "}
         </div>
         <div className="col">
