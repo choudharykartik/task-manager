@@ -240,17 +240,17 @@ function App() {
             type="text"
             // className="form-control"
             placeholder="search tasks..."
-            className="bg-white p-2 w-3/4 outline-none"
+            className="bg-white p-2 w-3/4 border-0"
             name="query"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <button
             type="submit"
-            className="p-2 text-center text-blue-500 w-1/4 bg-white border-l"
+            className="p-2 text-center text-blue-500 w-1/4 bg-white border-0"
             onClick={searchTask}
           >
-            Search
+            s
           </button>{" "}
         </div>
         <div className="col">

@@ -116,7 +116,7 @@ html,body{
 
 .App {
   padding: 20px;
-  background-color: #282c34;
+  background-image: linear-gradient(to right, rgba(34,193,195,1),     rgba(253,187,45,1));
   min-height: 100vh;
   color: rgb(11, 1, 1);
 
