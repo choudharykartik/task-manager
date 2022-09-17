@@ -156,7 +156,7 @@ function App() {
 
       <div className="row">
         <div className="col">
-          <h2 style={{ color: "white" }}> Tasks Manager</h2>
+          <h2 style={{ color: "white" }}> Tasks List</h2>
         </div>
         <div className="col">
           <Button
@@ -254,15 +254,42 @@ function App() {
           </button>{" "}
         </div>
         <div className="col">
+          {/* <button
+            type="button"
+            className="btn btn-primary"
+            onClick={articleForm}
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              zIndex: "10",
+            }}
+          > */}
+          <div
+            className="plus radius"
+            // style=":35px;--t:3px;--c2:green"
+            style={{
+              height: "50px",
+              width: "50px",
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              zIndex: "10",
+            }}
+            onClick={articleForm}
+          ></div>
+          {/* </button> */}
+        </div>
+        {/* <div className="col">
           <button
             type="button"
             className="btn btn-primary"
             onClick={articleForm}
             style={{ float: "right" }}
           >
-            Add Task
+            + Task
           </button>
-        </div>
+        </div> */}
       </div>
       <br />
       <br />
