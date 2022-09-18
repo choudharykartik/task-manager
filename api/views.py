@@ -1,9 +1,10 @@
+from functools import partial
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import TaskSerializer, ApppuserSerializer
-from .models import Appuser, Task
+from .serializers import *
+from .models import *
 from rest_framework.decorators import api_view, APIView
 from rest_framework import generics, mixins, viewsets
 from django.shortcuts import get_object_or_404
@@ -76,9 +77,68 @@ class TaskList(viewsets.ModelViewSet):
         serialized = TaskSerializer(data=request.data)
         if serialized.is_valid():
             serialized.save(created_by=request.user)
+            tags = request.data.get("tag_ids", None)
+            if tags:
+                tag_objs = []
+                for tag in tags:
+                    tag_obj = TagTaskMapping(
+                        tag_id=tag, task_id=serialized.data.get('id'))
+                    tag_objs.append(tag_obj)
+                TagTaskMapping.objects.bulk_create(tag_objs)
             return Response(serialized.data, status=status.HTTP_201_CREATED)
         else:
-            return Response({"message": serialized.error}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": serialized.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        task_obj = get_object_or_404(Task, pk=pk)
+        serialized = TaskSerializer(task_obj, data=request.data, partial=True)
+        if serialized.is_valid():
+            serialized.save(created_by=request.user)
+            tags = request.data.get("tag_ids", None)
+            existing_tags = list(TagTaskMapping.objects.filter(
+                task_id=serialized.data.get('id')).values_list("tag_id", flat=True))
+            print('Incoming tags', tags)
+            print('Existing tags', existing_tags)
+            adding_tags = list(set(tags)-set(existing_tags))
+            removing_tags = list(set(existing_tags)-set(tags))
+            print("adding_tags", adding_tags, "removing_tags", removing_tags)
+            if tags:
+                tag_objs = []
+                for tag in adding_tags:
+                    tag_obj = TagTaskMapping(
+                        tag_id=tag, task_id=serialized.data.get('id'))
+                    tag_objs.append(tag_obj)
+                TagTaskMapping.objects.bulk_create(tag_objs)
+                TagTaskMapping.objects.filter(
+                    tag_id__in=removing_tags).delete()
+            return Response(serialized.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"message": serialized.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TagList(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        query = request.GET.get('query')
+        if query:
+            queryset = Tag.objects.filter(
+                Q(name__icontains=query) | Q(description__icontains=query), created_by=request.user).order_by('status')
+        else:
+            queryset = Tag.objects.filter(
+                created_by=request.user).order_by('status')
+        serialized = TagSerializer(queryset, many=True)
+        return Response(serialized.data, status=status.HTTP_200_OK)
+
+    def create(self, request):
+        serialized = TagSerializer(data=request.data)
+        if serialized.is_valid():
+            serialized.save(created_by=request.user)
+            return Response(serialized.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"message": serialized.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserViewSet(viewsets.ModelViewSet):

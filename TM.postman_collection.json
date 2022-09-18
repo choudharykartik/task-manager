@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "118d6078-7934-451a-8c4b-1b8fd02450f8",
+		"name": "TM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21625413"
+	},
+	"item": [
+		{
+			"name": "list tasks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/tasks",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\":\"kartik\",\r\n    \"last_name\":\"choudhary\",\r\n    \"password\":\"Password1a\",\r\n    \"email\":\"kartik123choudhary@gmail.com\",\r\n    \"username\":\"choudharykartik\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://managemydailytasks.herokuapp.com/auth/",
+					"protocol": "https",
+					"host": [
+						"managemydailytasks",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

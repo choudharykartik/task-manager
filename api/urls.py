@@ -8,6 +8,7 @@ from rest_framework.authtoken import views
 
 router = DefaultRouter()
 router.register(r'tasks', TaskList, basename='tasks')
+router.register(r'tags', TagList, basename='tags')
 router.register('auth', UserViewSet, basename='auth')
 urlpatterns = [
     path('login', views.obtain_auth_token),
