@@ -14,6 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [allTags, setAlllTags] = useState([]);
   const [query, setQuery] = useState("");
   const [kpis, setKpis] = useState({ due: "", todo: "", done: "" });
   const [editTask, setEditTask] = useState(null);
@@ -34,6 +35,22 @@ function App() {
   useEffect(() => {
     axios.get("https://managemydailytasks.herokuapp.com/check_due_task/");
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://managemydailytasks.herokuapp.com/tags/`, {
+        headers: {
+          Authorization: `Token  ${token["mytoken"]}`,
+        },
+      })
+      .then((resp) => {
+        setAlllTags(resp.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   useEffect(() => {
     axios
       .get(`https://managemydailytasks.herokuapp.com/tasks/?query=${query}`, {
@@ -221,10 +238,11 @@ function App() {
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Task</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <TaskForm
+                allTags={allTags}
                 task={editTask}
                 updateInformation={updateInformation}
                 insertInformation={insertInformation}

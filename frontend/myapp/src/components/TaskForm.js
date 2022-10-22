@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import APIService from "../APIService";
 import { useCookies } from "react-cookie";
 import toast, { Toaster } from "react-hot-toast";
+import Multiselect from "multiselect-react-dropdown";
 
 function TaskForm(props) {
   const [name, setTaskName] = useState("");
@@ -12,6 +13,9 @@ function TaskForm(props) {
   const defaultValue = date.toLocaleDateString("en-CA");
   const [dueDate, setDueDate] = useState(defaultValue);
   const [token, setToken] = useCookies(["mytoken"]);
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  // this.state = { options: props.allTags };
   useEffect(() => {
     setTaskName(props.task.name);
     setTaskDescription(props.task.description);
@@ -21,6 +25,11 @@ function TaskForm(props) {
         : dueDate
     );
   }, [props.task]);
+
+  useEffect(() => {
+    console.log(selectedTags);
+  }, [selectedTags]);
+
   const updateTask = (task) => {
     APIService.updateTask(
       props.task.id,
@@ -83,6 +92,14 @@ function TaskForm(props) {
             name="dateRequired"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
+          />
+
+          <Multiselect
+            options={props.allTags} // Options to display in the dropdown
+            // selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+            onSelect={setSelectedTags(selectedList)} // Function will trigger on select event
+            // onRemove={this.onRemove} // Function will trigger on remove event
+            displayValue="name" // Property name to display in the dropdown options
           />
 
           <br />
